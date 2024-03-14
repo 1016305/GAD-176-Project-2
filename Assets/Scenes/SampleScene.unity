@@ -183,13 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 723a47f2a975a0c4787a5b64f57a6619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerraycaster: {fileID: 0}
-  moveSpeed: 5000
-  moveDrag: 10
-  maxHealth: 100
-  attackRange: 3
-  attackDamage: 5
-  attackDelayTime: 2
+  c_player: {fileID: 11400000, guid: 68b23eb72619308438ac61e79cc9a062, type: 2}
 --- !u!136 &170818804
 CapsuleCollider:
   m_ObjectHideFlags: 0

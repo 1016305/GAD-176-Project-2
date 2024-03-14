@@ -30,7 +30,7 @@ namespace SAE.GAD176.Project2
         void Update()
         {
             //Uses the getter tuple from the player to get the max, and current health.
-            var playerData = currentPlayer.GetHealth();
+            var playerData = currentPlayer.GetPlayerInfo();
             displayPlayerHealth.text = ("Current Health: \n" + playerData.Item2.ToString() + "/" + playerData.Item1.ToString());
         }
         #endregion
