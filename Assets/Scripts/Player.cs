@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SAE.GAD176.Project2
@@ -111,9 +112,8 @@ namespace SAE.GAD176.Project2
             return Tuple.Create(c_player.maxHealth, currentHealth);
         }
 
-        //Player has an attack angle of 45 degrees relative to local z+. Can only attack enemies if they are within this
-        //  range. Multiple rays are cast within the 45 degree range. Max length of rays are determined by the attackRange
-        // variable, which can be adjusted by having items.
+        //Attack is called if the "Fire1" or Left Mouse Button is down. This allows the player to click and hold to continually
+        //  attack.
 
         public void Attack()
         {
@@ -123,18 +123,24 @@ namespace SAE.GAD176.Project2
             }
             
         }
+        //Delayed attack is the attack function, with a delay in seconds to promote strategic play.
         private IEnumerator DelayedAttack()
         {
             attackDelay = true;
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, c_player.attackRange))
             {
+                hit.collider.GetComponentInParent<Enemy>().TakeDamage(c_player.attackDamage);
+                Debug.Log(hit.collider.GetComponentInParent<Enemy>().currentHealth);
                 //Put all the attack gubbins in here okey!!
                 Debug.DrawLine(transform.position, hit.point, Color.red, 3);
-                print(hit.transform.name);
             }
             yield return new WaitForSeconds(c_player.attackDelayTime);
             attackDelay = false;
+        }
+        public void DamageKnockBack(Vector3 relativeDirection, float knockbackForce)
+        {
+            rb.AddForce(relativeDirection * knockbackForce, ForceMode.Impulse);
         }
         #endregion
     }

@@ -9,6 +9,7 @@ public class PlayerScriptableObject : ScriptableObject
     public float moveDrag = 10f;
     public int maxHealth = 100;
     public float attackRange = 3;
-    public float attackDamage = 5;
+    public int attackDamage = 5;
     public float attackDelayTime = 2;
+    public float knockbackAmmount = 3;
 }
