@@ -19,6 +19,8 @@ namespace SAE.GAD176.Project2
         private Vector3 mouseWorldPosition;
         private Camera cam;
         protected bool attackDelay = false;
+        private List<Item> inventory = new List<Item>();
+        private Item activeItem;
         #endregion
 
         #region Serialized Variables, also controlled by items
@@ -132,15 +134,56 @@ namespace SAE.GAD176.Project2
             {
                 hit.collider.GetComponentInParent<Enemy>().TakeDamage(c_player.attackDamage);
                 Debug.Log(hit.collider.GetComponentInParent<Enemy>().currentHealth);
+                
                 //Put all the attack gubbins in here okey!!
+
                 Debug.DrawLine(transform.position, hit.point, Color.red, 3);
+            }
+            else
+            {
+                Debug.Log("Miss");
             }
             yield return new WaitForSeconds(c_player.attackDelayTime);
             attackDelay = false;
+
         }
         public void DamageKnockBack(Vector3 relativeDirection, float knockbackForce)
         {
             rb.AddForce(relativeDirection * knockbackForce, ForceMode.Impulse);
+        }
+        public void PickUpItem(Item item)
+        {
+            inventory.Add(item);
+            if (activeItem == null)
+            {
+                activeItem = inventory[0];
+            }
+        }
+        public void SwitchItem()
+        {
+            
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (inventory == null)
+                {
+                    Debug.Log("No items!");
+                }
+                else
+                {
+
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (inventory == null)
+                {
+                    Debug.Log("No items!");
+                }
+                else
+                {
+
+                }
+            }
         }
         #endregion
     }
