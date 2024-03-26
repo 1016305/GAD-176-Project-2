@@ -13,7 +13,7 @@ namespace SAE.GAD176.Project2
     public class Player : MonoBehaviour
     {
         #region private, protected
-        
+
         private Rigidbody rb;
         private Vector3 movementVector;
         private Vector3 mouseWorldPosition;
@@ -21,6 +21,7 @@ namespace SAE.GAD176.Project2
         protected bool attackDelay = false;
         private List<Item> inventory = new List<Item>();
         private Item activeItem;
+        private int inventoryIndex = 0;
         #endregion
 
         #region Serialized Variables, also controlled by items
@@ -52,6 +53,7 @@ namespace SAE.GAD176.Project2
         {
             GetInput();
             Attack();
+            SwitchItem();
         }
 
         private void FixedUpdate()
@@ -106,12 +108,12 @@ namespace SAE.GAD176.Project2
         //  a single method, wherein I can choose which data is output. Summary so I know what values return per item
         //  when I access it in other classes.
         /// <summary>
-        /// Item1 = maxHealth, Item2 = currentHealth
+        /// Item1 = maxHealth, Item2 = currentHealth, Item3 = activeItem
         /// </summary>
         /// <returns></returns>
-        public Tuple<int, int> GetPlayerInfo()
+        public Tuple<int, int, Item> GetPlayerInfo()
         {
-            return Tuple.Create(c_player.maxHealth, currentHealth);
+            return Tuple.Create(c_player.maxHealth, currentHealth, activeItem);
         }
 
         //Attack is called if the "Fire1" or Left Mouse Button is down. This allows the player to click and hold to continually
@@ -123,7 +125,7 @@ namespace SAE.GAD176.Project2
             {
                 StartCoroutine(DelayedAttack());
             }
-            
+
         }
         //Delayed attack is the attack function, with a delay in seconds to promote strategic play.
         private IEnumerator DelayedAttack()
@@ -132,12 +134,17 @@ namespace SAE.GAD176.Project2
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, c_player.attackRange))
             {
-                hit.collider.GetComponentInParent<Enemy>().TakeDamage(c_player.attackDamage);
-                Debug.Log(hit.collider.GetComponentInParent<Enemy>().currentHealth);
-                
-                //Put all the attack gubbins in here okey!!
+                Enemy e = hit.collider.GetComponentInParent<Enemy>();
+                if (e)
+                {
 
-                Debug.DrawLine(transform.position, hit.point, Color.red, 3);
+                    e.TakeDamage(c_player.attackDamage);
+                    Debug.Log(e.currentHealth);
+
+                    //Put all the attack gubbins in here okey!!
+
+                    Debug.DrawLine(transform.position, hit.point, Color.red, 3);
+                }
             }
             else
             {
@@ -159,33 +166,54 @@ namespace SAE.GAD176.Project2
                 activeItem = inventory[0];
             }
         }
-        public void SwitchItem()
+        //THIS DOESNT WORK FIX IT PLEASE
+        private void SwitchItem()
         {
-            
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                if (inventory == null)
+                if (inventory == null | activeItem == null)
                 {
-                    Debug.Log("No items!");
+                    Debug.Log("No item!");
                 }
                 else
                 {
+                    if (inventoryIndex > inventory.Count - 1)
+                    {
+                        inventoryIndex = 0;
+                        activeItem = inventory[inventoryIndex];
+                    }
+                    else
+                    {
+                        inventoryIndex++;
+                        activeItem = inventory[inventoryIndex];
+
+                    }
 
                 }
+                #endregion
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (inventory == null)
+                if (inventory == null | activeItem == null)
                 {
-                    Debug.Log("No items!");
+                    Debug.Log("No item!");
                 }
                 else
                 {
+                    if (inventoryIndex < inventory.Count - 1)
+                    {
+                        inventoryIndex = inventory.Count - 1;
+                        activeItem = inventory[inventoryIndex];
+                    }
+                    else
+                    {
+                        inventoryIndex--;
+                        activeItem = inventory[inventoryIndex];
 
+                    }
                 }
             }
         }
-        #endregion
     }
 }
 

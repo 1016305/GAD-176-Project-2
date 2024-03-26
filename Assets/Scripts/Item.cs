@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Players/Item")]
 public class Item : ScriptableObject
 {
+    public string i_name;
     //player stat modifiers
     public float i_moveSpeed;
     public float i_moveDrag;

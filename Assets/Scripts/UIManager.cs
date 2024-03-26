@@ -9,6 +9,7 @@ namespace SAE.GAD176.Project2
     {
         #region Private, Protected
         private TextMeshProUGUI displayPlayerHealth;
+        [SerializeField] private TextMeshProUGUI displayCurrentItem;
         private Player currentPlayer;
         #endregion
 
@@ -32,6 +33,15 @@ namespace SAE.GAD176.Project2
             //Uses the getter tuple from the player to get the max, and current health.
             var playerData = currentPlayer.GetPlayerInfo();
             displayPlayerHealth.text = ("Current Health: \n" + playerData.Item2.ToString() + "/" + playerData.Item1.ToString());
+            if (playerData.Item3 == null)
+            {
+                displayCurrentItem.text = "";
+            }
+            else
+            {
+                displayCurrentItem.text = ("Current Item: " + playerData.Item3.name);
+            }
+            
         }
         #endregion
     }
