@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - UI_playerHealth
+  - UI_currentItem
+  - UI_enemyHP
+  - UI_money
   layers:
   - Default
   - TransparentFX

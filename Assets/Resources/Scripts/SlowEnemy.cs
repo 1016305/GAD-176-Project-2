@@ -26,7 +26,7 @@ namespace SAE.GAD176.Project2
             switch (currentState)
             {
                 case enemyState.patrol:
-                    //patrol behaviour
+                    ReturnToStart();
                     break;
                 case enemyState.alert:
                     RotateTowardPlayer();

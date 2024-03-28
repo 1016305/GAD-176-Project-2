@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SAE.GAD176.Project2
 {
@@ -61,6 +62,10 @@ namespace SAE.GAD176.Project2
             Move();
             RotateToMouse();
         }
+        private void OnLevelWasLoaded(int level)
+        {
+            cam = Camera.main;
+        }
         #endregion
         #region My Methods
         //GetInput gets input. Legacy input manager for the movement axies, Horizontal and Vertical.
@@ -103,17 +108,20 @@ namespace SAE.GAD176.Project2
         {
             currentHealth -= damage;
         }
-
+        public void GetMoney(int money)
+        {
+            c_player.money += money;
+        }
         //Universal getter. I found a new thing I hate. It's called a tuple. I can use it to return multiple values from
         //  a single method, wherein I can choose which data is output. Summary so I know what values return per item
         //  when I access it in other classes.
         /// <summary>
-        /// Item1 = maxHealth, Item2 = currentHealth, Item3 = activeItem
+        /// Item1 = maxHealth, Item2 = currentHealth, Item3 = activeItem, Item4 = money
         /// </summary>
         /// <returns></returns>
-        public Tuple<int, int, Item> GetPlayerInfo()
+        public Tuple<int, int, Item, int> GetPlayerInfo()
         {
-            return Tuple.Create(c_player.maxHealth, currentHealth, activeItem);
+            return Tuple.Create(c_player.maxHealth, currentHealth, activeItem, c_player.money);
         }
 
         //Attack is called if the "Fire1" or Left Mouse Button is down. This allows the player to click and hold to continually
@@ -137,13 +145,10 @@ namespace SAE.GAD176.Project2
                 Enemy e = hit.collider.GetComponentInParent<Enemy>();
                 if (e)
                 {
-
                     e.TakeDamage(c_player.attackDamage);
                     Debug.Log(e.currentHealth);
-
-                    //Put all the attack gubbins in here okey!!
-
-                    Debug.DrawLine(transform.position, hit.point, Color.red, 3);
+                    e.DamageKnockBack(Vector3.forward, c_player.knockbackAmmount);
+                    e.currentState = Enemy.enemyState.alert;
                 }
             }
             else

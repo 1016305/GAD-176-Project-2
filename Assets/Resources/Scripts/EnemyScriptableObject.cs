@@ -19,4 +19,6 @@ public class EnemyScriptableObject : ScriptableObject
         public float rotateSpeed;
     [Tooltip("The radius (in degrees) in front of the enemy that they will see the player and become alerted.")]
         public float viewRadius;
+    [Tooltip("The distance within the view radius at which the enemy will see the player and become alerted.")]
+        public float viewDistance;
 }

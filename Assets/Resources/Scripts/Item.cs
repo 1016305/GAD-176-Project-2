@@ -6,6 +6,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public string i_name;
+    public string i_Description;
     //player stat modifiers
     public float i_moveSpeed;
     public float i_moveDrag;

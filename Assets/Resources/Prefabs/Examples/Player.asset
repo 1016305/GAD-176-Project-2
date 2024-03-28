@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d526038722d0e1d42b815e72cfe7f674, type: 3}
-  m_Name: Enemy1
+  m_Script: {fileID: 11500000, guid: 1ab79ae1100b9cf46bd22369e7a1dc8d, type: 3}
+  m_Name: Player
   m_EditorClassIdentifier: 
+  moveSpeed: 5000
+  moveDrag: 10
   maxHealth: 100
-  moveSpeed: 2000
-  attackDamage: 5
-  attackSpeed: 5
-  drag: 10
-  rotateSpeed: 0
-  viewRadius: 0
+  attackRange: 6
+  attackDamage: 20
+  attackDelayTime: 1
+  knockbackAmmount: 10

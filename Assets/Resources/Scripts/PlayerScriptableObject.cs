@@ -12,4 +12,5 @@ public class PlayerScriptableObject : ScriptableObject
     public int attackDamage = 5;
     public float attackDelayTime = 2;
     public float knockbackAmmount = 3;
+    public int money = 0;
 }
