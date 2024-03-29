@@ -8,6 +8,7 @@ TagManager:
   - UI_currentItem
   - UI_enemyHP
   - UI_money
+  - ItemZone
   layers:
   - Default
   - TransparentFX
