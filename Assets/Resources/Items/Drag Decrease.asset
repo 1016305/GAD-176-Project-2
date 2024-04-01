@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c87ec0dd37c648540b9868b97af01aa3, type: 3}
-  m_Name: Item 10
+  m_Name: Drag Decrease
   m_EditorClassIdentifier: 
-  i_name: Item 10
-  i_Description: 
-  i_moveSpeed: 0
-  i_moveDrag: 0
+  i_name: Ice Boots
+  i_Description: Allows the player to slide around.
+  i_moveSpeed: -500
+  i_moveDrag: -10
   i_maxHealth: 0
   i_attackRange: 0
   i_attackDamage: 0
   i_attackDelayTime: 0
   i_knockbackAmmount: 0
+  i_moneyDouble: 0

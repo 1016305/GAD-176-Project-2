@@ -8,7 +8,9 @@ namespace SAE.GAD176.Project2
 {
     public class ShopTeleport : MonoBehaviour
     {
-        bool isInShop = false;
+        [Tooltip("Two teleporters use this script. Ensure one has this ticked, and the other does not.")]
+        [SerializeField] private bool teleporter;
+        private bool isInShop = false;
         Vector3 shop = new Vector3(0, 0, -118);
         Shop _shop;
 
@@ -18,24 +20,18 @@ namespace SAE.GAD176.Project2
         }
         private void OnTriggerEnter(Collider other)
         {
-            StartCoroutine(TeleportWait(other));
+            TeleportWait(other);
             _shop.GenerateInventory();
         }
-        private IEnumerator TeleportWait(Collider other)
+        private void TeleportWait(Collider other)
         {
-            if (!isInShop)
+            if (teleporter)
             {
                 other.transform.position = shop;
-                yield return new WaitForSeconds(0.5f);
-                isInShop = true;
-                yield break;
             }
-            else if (isInShop)
+            else if (!teleporter)
             {
                 other.transform.position = Vector3.zero;
-                yield return new WaitForSeconds(0.5f);
-                isInShop = false;
-                yield break;
             }
         }
     }

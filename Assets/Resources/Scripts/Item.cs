@@ -15,5 +15,6 @@ public class Item : ScriptableObject
     public int i_attackDamage;
     public float i_attackDelayTime;
     public float i_knockbackAmmount;
+    public bool i_moneyDouble;
 }
 

@@ -19,3 +19,4 @@ MonoBehaviour:
   attackDamage: 20
   attackDelayTime: 1
   knockbackAmmount: 10
+  money: 404

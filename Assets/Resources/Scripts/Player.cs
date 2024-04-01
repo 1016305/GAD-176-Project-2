@@ -20,14 +20,24 @@ namespace SAE.GAD176.Project2
         private Vector3 mouseWorldPosition;
         private Camera cam;
         protected bool attackDelay = false;
-        private List<Item> inventory = new List<Item>();
+        [SerializeField] private List<Item> inventory = new List<Item>();
         private Item activeItem;
-        private int inventoryIndex = 0;
+        [SerializeField] private int inventoryIndex = 0;
         #endregion
 
         #region Serialized Variables, also controlled by items
         private int currentHealth;
         [SerializeField] private PlayerScriptableObject c_player;
+        #endregion
+
+        #region playerStats to be accessed
+        public float moveSpeed;
+        public float moveDrag;
+        public int maxHP;
+        public float attackRange;
+        public int attackDamage;
+        public float attackDelayTime;
+        public float knockbackAmmount;
         #endregion
 
         #region Unity Methods
@@ -48,26 +58,34 @@ namespace SAE.GAD176.Project2
             {
                 rb = GetComponent<Rigidbody>();
             }
+            SetDefaultStats();
         }
         //Input detection is run in Update, but movement is run in FixedUpdate
         void Update()
         {
             GetInput();
             Attack();
-            SwitchItem();
         }
 
         private void FixedUpdate()
         {
             Move();
             RotateToMouse();
+            SwitchItem();
         }
-        private void OnLevelWasLoaded(int level)
-        {
-            cam = Camera.main;
-        }
+
         #endregion
         #region My Methods
+        private void SetDefaultStats()
+        {
+            moveSpeed = c_player.moveSpeed;
+            moveDrag = c_player.moveDrag;
+            maxHP = c_player.maxHealth;
+            attackRange = c_player.attackRange;
+            attackDamage = c_player.attackDamage;
+            attackDelayTime = c_player.attackDelayTime;
+            knockbackAmmount = c_player.knockbackAmmount;
+        }
         //GetInput gets input. Legacy input manager for the movement axies, Horizontal and Vertical.
         //Gets mouse position for rotation.
         private void GetInput()
@@ -91,8 +109,8 @@ namespace SAE.GAD176.Project2
         // ceases.
         private void Move()
         {
-            rb.AddForce(movementVector * c_player.moveSpeed * Time.deltaTime, ForceMode.Force);
-            rb.drag = c_player.moveDrag;
+            rb.AddForce(movementVector * moveSpeed * Time.deltaTime, ForceMode.Force);
+            rb.drag = moveDrag;
             cam.transform.position = new Vector3(transform.position.x, cam.transform.position.y, transform.position.z);
         }
 
@@ -103,26 +121,7 @@ namespace SAE.GAD176.Project2
             transform.LookAt(new Vector3(mouseWorldPosition.x, transform.position.y, mouseWorldPosition.z), Vector3.up);
         }
 
-        //Basic setter for other classes to access to damage the player.
-        public void TakeDamage(int damage)
-        {
-            currentHealth -= damage;
-        }
-        public void GetMoney(int money)
-        {
-            c_player.money += money;
-        }
-        //Universal getter. I found a new thing I hate. It's called a tuple. I can use it to return multiple values from
-        //  a single method, wherein I can choose which data is output. Summary so I know what values return per item
-        //  when I access it in other classes.
-        /// <summary>
-        /// Item1 = maxHealth, Item2 = currentHealth, Item3 = activeItem, Item4 = money
-        /// </summary>
-        /// <returns></returns>
-        public Tuple<int, int, Item, int> GetPlayerInfo()
-        {
-            return Tuple.Create(c_player.maxHealth, currentHealth, activeItem, c_player.money);
-        }
+        
 
         //Attack is called if the "Fire1" or Left Mouse Button is down. This allows the player to click and hold to continually
         //  attack.
@@ -138,16 +137,18 @@ namespace SAE.GAD176.Project2
         //Delayed attack is the attack function, with a delay in seconds to promote strategic play.
         private IEnumerator DelayedAttack()
         {
+            //Raycast from the player forwards, distance is determined by the c_player.attackRange value.
             attackDelay = true;
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, c_player.attackRange))
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, attackRange))
             {
+                //Runs the enemy's takeDamage, and the enemy's knockback.
                 Enemy e = hit.collider.GetComponentInParent<Enemy>();
                 if (e)
                 {
-                    e.TakeDamage(c_player.attackDamage);
+                    e.TakeDamage(attackDamage);
                     Debug.Log(e.currentHealth);
-                    e.DamageKnockBack(Vector3.forward, c_player.knockbackAmmount);
+                    e.DamageKnockBack(Vector3.forward, knockbackAmmount);
                     e.currentState = Enemy.enemyState.alert;
                 }
             }
@@ -155,70 +156,127 @@ namespace SAE.GAD176.Project2
             {
                 Debug.Log("Miss");
             }
-            yield return new WaitForSeconds(c_player.attackDelayTime);
+            yield return new WaitForSeconds(attackDelayTime);
             attackDelay = false;
 
         }
+        //Player's knockback. Identical to the enemy's, but knockback force is adjustable through items
         public void DamageKnockBack(Vector3 relativeDirection, float knockbackForce)
         {
             rb.AddForce(relativeDirection * knockbackForce, ForceMode.Impulse);
         }
+        //Runs only once. When the player adds an item to their inventory, this forces to item into the equipped slot.
+        //Not currently relevant, but it one point I had the items as physical gameobjects. I left this is in case I
+        //  wanted to change it back.
+
+        //NB re-engineered it to equip and apply the item
         public void PickUpItem(Item item)
         {
             inventory.Add(item);
             if (activeItem == null)
             {
                 activeItem = inventory[0];
+                SetStatModifiers();
+            }
+            else
+            {
+                activeItem = inventory[inventory.Count - 1];
+                SetStatModifiers();
             }
         }
+        
         //THIS DOESNT WORK FIX IT PLEASE
         private void SwitchItem()
-        {
-            if (Input.GetKeyDown(KeyCode.Q))
+        {            
+            if (Input.GetKeyDown(KeyCode.E) && inventory.Count != 0)
             {
-                if (inventory == null | activeItem == null)
+                inventoryIndex++;
+                if (inventoryIndex > inventory.Count - 1)
                 {
-                    Debug.Log("No item!");
+                    inventoryIndex = 0;
+                    activeItem = inventory[0];
+                    SetStatModifiers();
                 }
                 else
                 {
-                    if (inventoryIndex > inventory.Count - 1)
-                    {
-                        inventoryIndex = 0;
-                        activeItem = inventory[inventoryIndex];
-                    }
-                    else
-                    {
-                        inventoryIndex++;
-                        activeItem = inventory[inventoryIndex];
-
-                    }
-
+                    activeItem = inventory[inventoryIndex];
+                    SetStatModifiers();
                 }
-                #endregion
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.Q) && inventory.Count != 0)
             {
-                if (inventory == null | activeItem == null)
+                inventoryIndex--;
+                if (inventoryIndex < 0)
                 {
-                    Debug.Log("No item!");
+                    inventoryIndex = inventory.Count - 1;
+                    activeItem = inventory[inventory.Count - 1];
+                    SetStatModifiers();
                 }
-                else
-                {
-                    if (inventoryIndex < inventory.Count - 1)
-                    {
-                        inventoryIndex = inventory.Count - 1;
-                        activeItem = inventory[inventoryIndex];
-                    }
-                    else
-                    {
-                        inventoryIndex--;
-                        activeItem = inventory[inventoryIndex];
+                activeItem = inventory[inventoryIndex];
+                SetStatModifiers();
+            }
+            
 
-                    }
-                }
+        }
+        private void SetStatModifiers()
+        {
+            SetDefaultStats();
+            moveSpeed += activeItem.i_moveSpeed;
+            moveDrag += activeItem.i_moveDrag;
+            maxHP += activeItem.i_maxHealth;
+            attackRange += activeItem.i_attackRange;
+            attackDamage += activeItem.i_attackDamage;
+            attackDelayTime += activeItem.i_attackDelayTime;
+            knockbackAmmount += activeItem.i_knockbackAmmount;
+        }
+        #endregion
+        #region Getters'n'Setters
+        //Basic setter for other classes to access to damage the player.
+        public void TakeDamage(int damage)
+        {
+            currentHealth -= damage;
+        }
+        //Adjusts the player's money count. Includes an alternate function to double the player's income if they
+        //  have a specific item equipped. I did this badly. If should be a modifier stores in the stats like the rest. Im sorry.
+        public void GetMoney(int money)
+        {
+            if (activeItem == null)
+            {
+                c_player.money += money;
+            }
+            else if (activeItem == activeItem.i_moneyDouble)
+            {
+                c_player.money += money * 2;
+            }
+            else
+            {
+                c_player.money += money;
             }
         }
+        //Universal getter. I found a new thing I hate. It's called a tuple. I can use it to return multiple values from
+        //  a single method, wherein I can choose which data is output. Summary so I know what values return per item
+        //  when I access it in other classes.
+        /// <summary>
+        /// Item1 = maxHealth, Item2 = currentHealth, Item3 = activeItem, Item4 = money, Item5 = Inventory
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<int, int, Item, int, List<Item>> GetPlayerInfo()
+        {
+            return Tuple.Create(maxHP, currentHealth, activeItem, c_player.money, inventory);
+        }
+        //Returns an int for the player's current money. Used by shops to determine if the player can afford an item.
+        public int GetMoney()
+        {
+            return c_player.money;
+        }
+        //Subtracts money from the player's values and adds an item. Functions to determine whether or not the player
+        //  can afford the item is controlled by the shop.
+        public void SpendMoney(Item item)
+        {
+            c_player.money -= 5;
+            PickUpItem(item);
+        }
+        #endregion
     }
 }
 

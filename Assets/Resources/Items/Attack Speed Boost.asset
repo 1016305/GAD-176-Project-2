@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c87ec0dd37c648540b9868b97af01aa3, type: 3}
-  m_Name: Item3
+  m_Name: Attack Speed Boost
   m_EditorClassIdentifier: 
-  i_name: Item3
+  i_name: Attack Speed Increase
+  i_Description: Increases the frequency that the player can attack at.
   i_moveSpeed: 0
   i_moveDrag: 0
   i_maxHealth: 0
   i_attackRange: 0
   i_attackDamage: 0
-  i_attackDelayTime: 0
+  i_attackDelayTime: 0.5
   i_knockbackAmmount: 0
+  i_moneyDouble: 0

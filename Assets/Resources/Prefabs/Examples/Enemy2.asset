@@ -9,15 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c87ec0dd37c648540b9868b97af01aa3, type: 3}
-  m_Name: Item 8
+  m_Script: {fileID: 11500000, guid: d526038722d0e1d42b815e72cfe7f674, type: 3}
+  m_Name: Enemy2
   m_EditorClassIdentifier: 
-  i_name: Item 8
-  i_Description: 
-  i_moveSpeed: 0
-  i_moveDrag: 0
-  i_maxHealth: 0
-  i_attackRange: 0
-  i_attackDamage: 0
-  i_attackDelayTime: 0
-  i_knockbackAmmount: 0
+  maxHealth: 100
+  moveSpeed: 5000
+  attackDamage: 10
+  attackSpeed: 5
+  drag: 10
+  rotateSpeed: 0
+  viewRadius: 45
+  viewDistance: 10

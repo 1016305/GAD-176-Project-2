@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c87ec0dd37c648540b9868b97af01aa3, type: 3}
-  m_Name: Item4
+  m_Name: MoneyDouble
   m_EditorClassIdentifier: 
-  i_name: Item 4
-  i_Description: 
+  i_name: Money Booster
+  i_Description: While active, the player recieves double money from defeating enemies.
   i_moveSpeed: 0
   i_moveDrag: 0
   i_maxHealth: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
   i_attackDamage: 0
   i_attackDelayTime: 0
   i_knockbackAmmount: 0
+  i_moneyDouble: 1

@@ -7,6 +7,7 @@ namespace SAE.GAD176.Project2
 {
     public class UIManager : MonoBehaviour
     {
+        public static UIManager current;
         #region Private, Protected
         private TextMeshProUGUI displayPlayerHealth;
         private TextMeshProUGUI displayCurrentItem;

@@ -9,6 +9,7 @@ TagManager:
   - UI_enemyHP
   - UI_money
   - ItemZone
+  - Teleporter
   layers:
   - Default
   - TransparentFX
