@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace SAE.GAD176.Project2
 {
-    public class DashEnemy : Enemy
+    public class ShootEnemy : Enemy
     {
-        bool doAttack = false;
-        private Vector3 playerLocation;
+        private Object bullet;
+        private bool doAttack = false;
+        Vector3 direction;
         // Start is called before the first frame update
         protected override void Start()
         {
+            bullet = Resources.Load("Prefabs/Bullet");
             base.Start();
         }
 
@@ -25,38 +27,28 @@ namespace SAE.GAD176.Project2
             {
                 case enemyState.patrol:
                     ReturnToStart();
-                    doAttack = false;
                     break;
                 case enemyState.alert:
                     RotateTowardPlayer();
                     if (!doAttack)
                     {
-                        StartCoroutine(DashAttack());
+                        StartCoroutine(ShootAtPlayer());
                     }
                     break;
             }
         }
-        //Get player co-ordinates, lock in
-        //Wait 0.5 seconds
-        //Dash to co-ordinates
-        //Wait X time
-        private IEnumerator DashAttack()
+        private IEnumerator ShootAtPlayer()
         {
-            float t = 0;
-            //Debug.Log("Alert");
             doAttack = true;
-            RotateTowardPlayer();
-            yield return new WaitForSeconds(0.5f);
-            while (t <= 1)
-            {
-                t += 1 * Time.deltaTime;
-                Debug.Log(t);
-                MoveTowardPlayer();
-                yield return new WaitForEndOfFrame();
-            }
-            yield return new WaitForSeconds(3f);
-            t = 0;
+            direction = Vector3.forward;
+            Instantiate(bullet, transform.position, Quaternion.LookRotation(transform.position - currentPlayerPosition), this.transform);
+            yield return new WaitForSeconds(3);
             doAttack = false;
+        }
+        public int GetDamageValue()
+        {
+            int damage = c_enemy.attackDamage;
+            return damage;
         }
     }
 }
