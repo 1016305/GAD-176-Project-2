@@ -57,7 +57,7 @@ namespace SAE.GAD176.Project2 {
             List<Item> tempItems = shopInventory.ToList();
             for (int i = 0; i < 3; i++)
             {
-                int rand = Random.Range(0, shopInventory.Count -1);
+                int rand = Random.Range(0, shopInventory.Count -1 - i);
                 //Debug.Log(i + " " + rand);
                 itemsForSale[i] = tempItems[rand];
                 //Debug.Log(itemsForSale[i].name);

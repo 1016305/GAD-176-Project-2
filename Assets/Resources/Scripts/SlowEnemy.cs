@@ -14,13 +14,12 @@ namespace SAE.GAD176.Project2
             base.Start();
         }
 
-        // Update is called once per frame
         protected override void Update()
         {
             base.Update();
             
         }
-
+        //switch case using the inherited Enum
         private void FixedUpdate()
         {
             switch (currentState)
@@ -35,6 +34,7 @@ namespace SAE.GAD176.Project2
             }
             
         }
+        //Attacks the player if their two colliders touch.
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.GetComponent<Player>() && !attackDelay)
@@ -43,6 +43,8 @@ namespace SAE.GAD176.Project2
                 StartCoroutine(Attack(player));
             }
         }
+        //Attack function. Attacks the player using values from the scriptable object, then waits for X seconds
+        //  before attacking again.
         IEnumerator Attack(Player player)
         {
             attackDelay = true;

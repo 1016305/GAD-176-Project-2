@@ -36,6 +36,7 @@ namespace SAE.GAD176.Project2
                     break;
             }
         }
+        //Dashes at the player to atttack.
         //Get player co-ordinates, lock in
         //Wait 0.5 seconds
         //Dash to co-ordinates

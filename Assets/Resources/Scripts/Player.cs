@@ -26,7 +26,7 @@ namespace SAE.GAD176.Project2
         #endregion
 
         #region Serialized Variables, also controlled by items
-        private int currentHealth;
+        [SerializeField] private int currentHealth;
         [SerializeField] private PlayerScriptableObject c_player;
         #endregion
 
@@ -65,6 +65,7 @@ namespace SAE.GAD176.Project2
         {
             GetInput();
             Attack();
+            IsDead();
         }
 
         private void FixedUpdate()
@@ -88,6 +89,12 @@ namespace SAE.GAD176.Project2
         }
         //GetInput gets input. Legacy input manager for the movement axies, Horizontal and Vertical.
         //Gets mouse position for rotation.
+        //In future this can directly return a Vector3
+        //private Vector3 GetInput()
+        //{
+        //    Vector3 input = new Vector3((Input.GetAxis("Horizontal")), 0, (Input.GetAxis("Vertical")));
+        //    return input;
+        //}
         private void GetInput()
         {
             //Movement Input
@@ -120,12 +127,26 @@ namespace SAE.GAD176.Project2
         {
             transform.LookAt(new Vector3(mouseWorldPosition.x, transform.position.y, mouseWorldPosition.z), Vector3.up);
         }
-
+        //Checks if the player's HP is at or below 0. If below zero, it will set the value to zero. If at zero, it will delete the player
+        //  and stop the game. Contains commands to quit both compiled application and in-editor application.
+        private void IsDead()
+        {
+            if (currentHealth < 0)
+            {
+                currentHealth = 0;
+            }
+            if (currentHealth == 0)
+            {
+                Application.Quit();
+                UnityEditor.EditorApplication.isPlaying = false;
+                Destroy(this.gameObject);
+                
+            }
+        }
         
 
         //Attack is called if the "Fire1" or Left Mouse Button is down. This allows the player to click and hold to continually
-        //  attack.
-
+        //  attack
         public void Attack()
         {
             if (Input.GetAxis("Fire1") != 0 && !attackDelay)
@@ -185,7 +206,11 @@ namespace SAE.GAD176.Project2
             }
         }
         
-        //THIS DOESNT WORK FIX IT PLEASE
+        //Allows the player to switch between items held in the inventory. Q to cycle backwards, E to cycle forwards.
+        //Active item is controlled by the int inventoryIndex, which is the int used to pick the index of the item from the inventory. Shocker.
+        //Will check if the int goes below zero, or goes above the maximum number of items in the list, and will roll around to the last item
+        // in the list, and the first one, respectively.
+        //When a new item is selected, it runs SetStatModifiers, to apply the stat changes implied by the item.
         private void SwitchItem()
         {            
             if (Input.GetKeyDown(KeyCode.E) && inventory.Count != 0)
@@ -218,6 +243,12 @@ namespace SAE.GAD176.Project2
             
 
         }
+        //Adjusts the player's stats to be affected by the item that is currently equipped.
+        //First runs SetDefaultStats(), to change all stats back to the base defined in the player scriptable object.
+        //  This is done beacuse stat modifiers are added to the base stats, not replaced by them.
+        //  This was done because when making new items, each stat would need to be manually set to the player's default stats.
+        //  This was done because some of the stats are types that cannot be null, like floats.
+        //Then grabs the stats of the items, and adds them to the newly default stats.
         private void SetStatModifiers()
         {
             SetDefaultStats();

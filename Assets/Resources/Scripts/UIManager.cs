@@ -60,10 +60,6 @@ namespace SAE.GAD176.Project2
         {
             activeEnemies.Add(enemyStat);
         }
-        private void OnLevelWasLoaded(int level)
-        {
-            currentPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
-        }
         #endregion
     }
 }

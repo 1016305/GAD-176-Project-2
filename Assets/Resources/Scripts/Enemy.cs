@@ -70,7 +70,7 @@ namespace SAE.GAD176.Project2
         protected void GetPlayerPosition()
         {
             currentPlayerPosition = player.transform.position;
-        }
+        }//Returns the magnitude of the distance between the player and the enemy.
         protected float GetPlayerDistance()
         {
             float dist = (currentPlayerPosition - transform.position).magnitude;
@@ -99,6 +99,7 @@ namespace SAE.GAD176.Project2
                 currentState = enemyState.alert;
             }
         }
+        //Returns the enemy to the location where it was placed in the scene.
         protected void ReturnToStart()
         {
             Vector3 moveDirection = (startPos - transform.position).normalized;
@@ -106,6 +107,7 @@ namespace SAE.GAD176.Project2
             rb.drag = c_enemy.drag;
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
         }
+        //Public setter for health, to be accessed by the player when they attack.
         public void TakeDamage(int damage)
         {
             currentHealth -= damage;
@@ -148,6 +150,7 @@ namespace SAE.GAD176.Project2
             UISys.transform.position = screenPos;
             UISys.GetComponent<TextMeshProUGUI>().text = (currentHealth.ToString()+ "/"+ c_enemy.maxHealth.ToString());
         }
+        //Called by the player when they attack the enemy. Knocks the enemy back by the ammount defined by the player's scriptable object.
         public void DamageKnockBack(Vector3 relativeDirection, float knockbackForce)
         {
             rb.AddForce(relativeDirection * knockbackForce, ForceMode.Impulse);

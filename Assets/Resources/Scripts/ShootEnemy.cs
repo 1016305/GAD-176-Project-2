@@ -21,6 +21,7 @@ namespace SAE.GAD176.Project2
         {
             base.Update();
         }
+        //Swith case using the Enum inherited from base class.
         private void FixedUpdate()
         {
             switch (currentState)
@@ -37,6 +38,8 @@ namespace SAE.GAD176.Project2
                     break;
             }
         }
+        //Shoots at the player.
+        //Instantiates a bullet at the enemy's position, then waits before repeating.
         private IEnumerator ShootAtPlayer()
         {
             doAttack = true;
@@ -45,6 +48,7 @@ namespace SAE.GAD176.Project2
             yield return new WaitForSeconds(3);
             doAttack = false;
         }
+        //public getter for the damage value from this enemy's scriptable object. To be used by the bullet to damage the player.
         public int GetDamageValue()
         {
             int damage = c_enemy.attackDamage;
