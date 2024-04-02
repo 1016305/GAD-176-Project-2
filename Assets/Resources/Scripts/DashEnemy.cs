@@ -6,8 +6,12 @@ namespace SAE.GAD176.Project2
 {
     public class DashEnemy : Enemy
     {
-        bool doAttack = false;
+        #region private vars
+        private bool doAttack = false;
         private Vector3 playerLocation;
+        #endregion
+
+        #region Unity methods
         // Start is called before the first frame update
         protected override void Start()
         {
@@ -36,6 +40,9 @@ namespace SAE.GAD176.Project2
                     break;
             }
         }
+        #endregion
+
+        #region my methods
         //Dashes at the player to atttack.
         //Get player co-ordinates, lock in
         //Wait 0.5 seconds
@@ -51,7 +58,7 @@ namespace SAE.GAD176.Project2
             while (t <= 1)
             {
                 t += 1 * Time.deltaTime;
-                Debug.Log(t);
+                //Debug.Log(t);
                 MoveTowardPlayer();
                 yield return new WaitForEndOfFrame();
             }
@@ -59,5 +66,6 @@ namespace SAE.GAD176.Project2
             t = 0;
             doAttack = false;
         }
+        #endregion
     }
 }

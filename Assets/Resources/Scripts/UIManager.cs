@@ -41,6 +41,8 @@ namespace SAE.GAD176.Project2
         {
             PlayerInfo();  
         }
+        #endregion
+        #region my methods
         void PlayerInfo()
         {
             //Uses the getter tuple from the player to get the max, and current health.
@@ -55,10 +57,6 @@ namespace SAE.GAD176.Project2
             {
                 displayCurrentItem.text = ("Current Item: " + playerData.Item3.name);
             }
-        }
-        public void AddUIToList(GameObject enemyStat)
-        {
-            activeEnemies.Add(enemyStat);
         }
         #endregion
     }

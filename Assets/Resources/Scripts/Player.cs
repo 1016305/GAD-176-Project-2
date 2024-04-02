@@ -31,13 +31,13 @@ namespace SAE.GAD176.Project2
         #endregion
 
         #region playerStats to be accessed
-        public float moveSpeed;
-        public float moveDrag;
-        public int maxHP;
-        public float attackRange;
-        public int attackDamage;
-        public float attackDelayTime;
-        public float knockbackAmmount;
+        private float moveSpeed;
+        private float moveDrag;
+        private int maxHP;
+        private float attackRange;
+        private int attackDamage;
+        private float attackDelayTime;
+        private float knockbackAmmount;
         #endregion
 
         #region Unity Methods
@@ -66,13 +66,14 @@ namespace SAE.GAD176.Project2
             GetInput();
             Attack();
             IsDead();
+            SwitchItem();
         }
 
         private void FixedUpdate()
         {
             Move();
             RotateToMouse();
-            SwitchItem();
+            
         }
 
         #endregion
@@ -147,7 +148,7 @@ namespace SAE.GAD176.Project2
 
         //Attack is called if the "Fire1" or Left Mouse Button is down. This allows the player to click and hold to continually
         //  attack
-        public void Attack()
+        private void Attack()
         {
             if (Input.GetAxis("Fire1") != 0 && !attackDelay)
             {
@@ -268,7 +269,7 @@ namespace SAE.GAD176.Project2
             currentHealth -= damage;
         }
         //Adjusts the player's money count. Includes an alternate function to double the player's income if they
-        //  have a specific item equipped. I did this badly. If should be a modifier stores in the stats like the rest. Im sorry.
+        //  have a specific item equipped. I did this badly. If should be a modifier stored in the stats like the rest. Im sorry.
         public void GetMoney(int money)
         {
             if (activeItem == null)
@@ -284,6 +285,13 @@ namespace SAE.GAD176.Project2
                 c_player.money += money;
             }
         }
+        //Returns an int for the player's current money. Used by shops to determine if the player can afford an item.
+        //I named this the same as the other GetMoney method. It was not by accident. I did not make a mistake that turned
+        //  out to be an example of polymorphism. This was 100% intended.
+        public int GetMoney()
+        {
+            return c_player.money;
+        }
         //Universal getter. I found a new thing I hate. It's called a tuple. I can use it to return multiple values from
         //  a single method, wherein I can choose which data is output. Summary so I know what values return per item
         //  when I access it in other classes.
@@ -294,11 +302,6 @@ namespace SAE.GAD176.Project2
         public Tuple<int, int, Item, int, List<Item>> GetPlayerInfo()
         {
             return Tuple.Create(maxHP, currentHealth, activeItem, c_player.money, inventory);
-        }
-        //Returns an int for the player's current money. Used by shops to determine if the player can afford an item.
-        public int GetMoney()
-        {
-            return c_player.money;
         }
         //Subtracts money from the player's values and adds an item. Functions to determine whether or not the player
         //  can afford the item is controlled by the shop.

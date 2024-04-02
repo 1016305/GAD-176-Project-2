@@ -137,4 +137,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   currentHealth: 0
-  c_enemy: {fileID: 0}
+  c_enemy: {fileID: 11400000, guid: c4ea2dc01f487914ab174bfd092db494, type: 2}

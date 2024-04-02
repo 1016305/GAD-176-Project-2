@@ -15,8 +15,8 @@ MonoBehaviour:
   moveSpeed: 5000
   moveDrag: 10
   maxHealth: 100
-  attackRange: 6
+  attackRange: 10
   attackDamage: 20
   attackDelayTime: 1
   knockbackAmmount: 10
-  money: 404
+  money: 0

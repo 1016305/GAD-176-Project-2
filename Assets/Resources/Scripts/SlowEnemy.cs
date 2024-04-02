@@ -6,9 +6,12 @@ namespace SAE.GAD176.Project2
 {
     public class SlowEnemy : Enemy
     {
+        #region private vars
         [SerializeField] private float enemyMeleeRange;
         private bool attackDelay = false;
+        #endregion
 
+        #region Unity methods
         protected override void Start()
         {
             base.Start();
@@ -31,8 +34,7 @@ namespace SAE.GAD176.Project2
                     RotateTowardPlayer();
                     MoveTowardPlayer();
                     break;
-            }
-            
+            }      
         }
         //Attacks the player if their two colliders touch.
         private void OnCollisionEnter(Collision collision)
@@ -43,9 +45,11 @@ namespace SAE.GAD176.Project2
                 StartCoroutine(Attack(player));
             }
         }
+        #endregion
+        #region my methods
         //Attack function. Attacks the player using values from the scriptable object, then waits for X seconds
         //  before attacking again.
-        IEnumerator Attack(Player player)
+        private IEnumerator Attack(Player player)
         {
             attackDelay = true;
             player.TakeDamage(c_enemy.attackDamage);
@@ -53,5 +57,6 @@ namespace SAE.GAD176.Project2
             yield return new WaitForSeconds(c_enemy.attackSpeed);
             attackDelay = false;
         }
+        #endregion
     }
 }

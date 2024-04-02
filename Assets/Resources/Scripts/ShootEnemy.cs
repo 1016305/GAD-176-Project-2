@@ -6,9 +6,12 @@ namespace SAE.GAD176.Project2
 {
     public class ShootEnemy : Enemy
     {
+        #region private vars
         private Object bullet;
         private bool doAttack = false;
-        Vector3 direction;
+        #endregion
+
+        #region Unity methods
         // Start is called before the first frame update
         protected override void Start()
         {
@@ -38,14 +41,17 @@ namespace SAE.GAD176.Project2
                     break;
             }
         }
+        #endregion
+
+        #region my methods
         //Shoots at the player.
         //Instantiates a bullet at the enemy's position, then waits before repeating.
         private IEnumerator ShootAtPlayer()
         {
             doAttack = true;
-            direction = Vector3.forward;
-            Instantiate(bullet, transform.position, Quaternion.LookRotation(transform.position - currentPlayerPosition), this.transform);
-            yield return new WaitForSeconds(3);
+            Vector3 direction = Vector3.forward;
+            Instantiate(bullet, transform.localPosition, Quaternion.Euler(Vector3.up));
+            yield return new WaitForSeconds(c_enemy.attackSpeed);
             doAttack = false;
         }
         //public getter for the damage value from this enemy's scriptable object. To be used by the bullet to damage the player.
@@ -54,5 +60,6 @@ namespace SAE.GAD176.Project2
             int damage = c_enemy.attackDamage;
             return damage;
         }
+        #endregion
     }
 }

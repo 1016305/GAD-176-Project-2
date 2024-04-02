@@ -10,7 +10,7 @@ using static UnityEditor.Progress;
 namespace SAE.GAD176.Project2 {
     public class Shop : MonoBehaviour
     {
-        #region public variables
+        #region private variables
         [SerializeField] private List<Item> shopInventory = new List<Item>();
         [SerializeField] private Item[] itemsForSale = new Item[3];
         private Player player;
@@ -41,15 +41,10 @@ namespace SAE.GAD176.Project2 {
         //Interim fix for input recognition not functioning correctly. Please do not put in the final project.
         private void FixedUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                tick = true;
-            }
-            else if (!Input.GetKeyDown(KeyCode.Space))
-            {
-                tick = false;
-            }
+            
         }
         #endregion
+
         //Runs every time the teleporter is accessed. Refreshes the shop's inventory based on the remaining store items.
         //Runs both when the player goes in, and when the player leaves. A little redundant but eh. Sue me.
         public void GenerateInventory()
@@ -111,7 +106,7 @@ namespace SAE.GAD176.Project2 {
         //Also checks if the player has enough money, or already has the item.
         private void ItemPurchase()
         {
-            if (tick)
+            if (Input.GetKey(KeyCode.Space))
             {
                 {
                     //Accesses the GetPlayerInfo tuple, and dumps the inventory to a list locally.

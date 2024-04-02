@@ -15,8 +15,8 @@ MonoBehaviour:
   maxHealth: 100
   moveSpeed: 0
   attackDamage: 10
-  attackSpeed: 0
+  attackSpeed: 1
   drag: 0
   rotateSpeed: 0
-  viewRadius: 0
-  viewDistance: 0
+  viewRadius: 45
+  viewDistance: 50
