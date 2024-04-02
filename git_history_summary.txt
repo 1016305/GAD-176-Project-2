@@ -1,0 +1,15 @@
+* b875011 (HEAD -> main, origin/main, origin/feature/additionalenemies, origin/HEAD, feature/additionalenemies) Project Completion
+* a599f65 Comment and summary updates
+* 0fae189 Just needs minor adjustments to the shootenemy
+* 8153f03 (origin/feature/items) Item system complete
+* 6cae3ed Further progress on the shop and items. Need to implement interaction yet
+* 2fcc650 Item system and enemy AI update
+* 8cb33ce Item system begin
+* 87203ef (origin/feature/Enemy, origin/develop) Enemy Mostly done. Additional work needed but priority shift
+* 6401fde Base enemy complete + slow enemy WIP
+* 2570f6b (origin/feature/PlayerMove) Basic player controls finished.
+* 472a971 Progress on player controlled
+* fdcc358 Further progress on player controller
+* 8008008 PlayerMove initial commit
+* 8cbfb32 Initial commit- folder structure
+* b84be97 Initial commit
